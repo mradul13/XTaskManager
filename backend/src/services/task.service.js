@@ -12,7 +12,7 @@ const getTasks = async ()=>{
     try{
         const tasks = Task.find({});
         if(!tasks){
-            throw new ApiError(httpStatus.NOT_FOUND, "No Tasks found");
+            throw new ApiError(404, "No Tasks found");
         }
         return tasks;
     }
@@ -21,7 +21,7 @@ const getTasks = async ()=>{
             throw error;
         }
         else{
-            throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Falied to retrieve tasks")
+            throw new ApiError(500, "Falied to retrieve tasks")
         }
     }
 }
@@ -40,7 +40,7 @@ const createTask = async (data)=>{
         return newTask;
     }
     catch(error){
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Failed to create task")
+        throw new ApiError(500, "Failed to create task")
     }
 }
 
@@ -56,7 +56,7 @@ const editTask = async (taskId, data)=>{
     try{
         const task = await Task.findById(taskId);
         if(!task){
-            throw new ApiError(httpStatus.BAD_REQUEST, "Task does not exist");
+            throw new ApiError(400, "Task does not exist");
         }
         const updatedTask = await Task.findByIdAndUpdate(taskId, data, {
             new: true,
@@ -68,7 +68,7 @@ const editTask = async (taskId, data)=>{
             throw error;
         }
         else{
-            throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Failed to update task")
+            throw new ApiError(500, "Failed to update task")
         }
     }
 }
@@ -78,7 +78,7 @@ const deleteTask = async (taskId)=>{
         await Task.findByIdAndDelete(taskId);
     }
     catch(error){
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Failed to delete task")
+        throw new ApiError(500, "Failed to delete task")
     }
 }
 
